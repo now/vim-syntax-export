@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <define name="ID.datatype">
+    <data type="ID"/>
+  </define>
+  <define name="LanguageCode.datatype">
+    <data type="language"/>
+  </define>
+  <define name="id.attrib">
+    <optional>
+      <attribute name="id">
+        <ref name="ID.datatype"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="xmlbase.attrib">
+    <optional>
+      <attribute name="xml:base"/>
+    </optional>
+  </define>
+  <define name="Core.attrib">
+    <ref name="id.attrib"/>
+    <ref name="xmlbase.attrib"/>
+  </define>
+  <define name="lang.attrib">
+    <optional>
+      <attribute name="xml:lang">
+        <ref name="LanguageCode.datatype"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="I18n.attrib">
+    <ref name="lang.attrib"/>
+  </define>
+  <define name="Common.attrib">
+    <ref name="Core.attrib"/>
+    <ref name="I18n.attrib"/>
+  </define>
+  <start>
+    <choice>
+      <ref name="file"/>
+      <ref name="line"/>
+      <ref name="segment"/>
+      <ref name="whitespace"/>
+    </choice>
+  </start>
+  <define name="file">
+    <element name="file">
+      <ref name="file.attlist"/>
+      <ref name="file.content"/>
+    </element>
+  </define>
+  <define name="file.attlist">
+    <ref name="Common.attrib"/>
+    <attribute name="path"/>
+    <attribute name="type"/>
+  </define>
+  <define name="file.content">
+    <zeroOrMore>
+      <ref name="line"/>
+    </zeroOrMore>
+  </define>
+  <define name="line">
+    <element name="line">
+      <ref name="line.attlist"/>
+      <ref name="line.content"/>
+    </element>
+  </define>
+  <define name="line.attlist">
+    <ref name="Common.attrib"/>
+  </define>
+  <define name="line.content">
+    <zeroOrMore>
+      <choice>
+        <ref name="segment"/>
+        <ref name="whitespace"/>
+      </choice>
+    </zeroOrMore>
+  </define>
+  <define name="segment">
+    <element name="segment">
+      <ref name="segment.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="segment.attlist">
+    <ref name="Common.attrib"/>
+    <attribute name="type"/>
+  </define>
+  <define name="whitespace">
+    <element name="whitespace">
+      <ref name="whitespace.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="whitespace.attlist">
+    <ref name="Common.attrib"/>
+  </define>
+</grammar>

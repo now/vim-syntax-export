@@ -1,0 +1,34 @@
+ID.datatype = xsd:ID
+LanguageCode.datatype = xsd:language
+
+id.attrib = attribute id { ID.datatype }?
+xmlbase.attrib = attribute xml:base { text }?
+Core.attrib = id.attrib, xmlbase.attrib
+lang.attrib = attribute xml:lang { LanguageCode.datatype }?
+I18n.attrib = lang.attrib
+Common.attrib = Core.attrib, I18n.attrib
+
+start = file | line | segment
+
+file = element file { file.attlist, file.content }
+file.attlist = Common.attrib
+file.content = information?, content
+
+information = element information { information.attlist, information.content }
+information.attlist = Common.attrib
+information.content = path? & type?
+
+content = element content { content.attlist, content.content }
+content.attlist = Common.attrib
+content.content = line*
+
+line = element line { line.attlist, line.content }
+line.attlist = Common.attrib
+line.content = segment*
+
+segment = element segment { segment.attlist, segment.content }
+segment.attlist = Common.attrib, attribute type { text }
+segment.content = (text | whitespace)*
+
+whitespace = element whitespace { whitespace.attlist, empty }
+whitespace.attlist = Common.attrib
